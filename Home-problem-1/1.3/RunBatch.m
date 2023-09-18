@@ -17,30 +17,50 @@ crossoverProbability = 0.8;        % Do NOT change
 % Batch runs
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define more runs here (pMut < 0.02) ...
+% Define more runs here 
 
-mutationProbability = 0.02;
-sprintf('Mutation rate = %0.5f', mutationProbability)
-maximumFitnessList002 = zeros(numberOfRuns,1);
-for i = 1:numberOfRuns 
- [maximumFitness, bestVariableValues]  = RunFunctionOptimization(populationSize, numberOfGenes, numberOfVariables, maximumVariableValue, tournamentSize, ...
-                                       tournamentProbability, crossoverProbability, mutationProbability, numberOfGenerations);
- sprintf('Run: %d, Score: %0.10f', i, maximumFitness)
-  maximumFitnessList002(i,1) = maximumFitness;
+
+mutationProbabilitys=[0 0.005 0.01 0.02 0.03 0.05  0.1 0.2 0.4 0.6 0.8];
+numberOfMutationProbabilitys=length(mutationProbabilitys);
+j=0; %index for mutationprobabilitys
+maximumFitnessList= zeros(numberOfRuns,numberOfMutationProbabilitys);
+for mutationProbability=mutationProbabilitys
+    j=j+1;
+    sprintf('Mutation rate = %0.5f', mutationProbability)
+        for i = 1:numberOfRuns 
+         [maximumFitness, bestVariableValues]  = RunFunctionOptimization(populationSize, numberOfGenes, numberOfVariables, maximumVariableValue, tournamentSize, ...
+                                               tournamentProbability, crossoverProbability, mutationProbability, numberOfGenerations);
+         sprintf('Run: %d, Score: %0.10f', i, maximumFitness)
+         maximumFitnessList(i,j) = maximumFitness;
+        end
+        
 end
 
+medianFitnessList=median(maximumFitnessList);
 
-% ... and here (pMut > 0.02)
+
+semilogx(mutationProbabilitys,medianFitnessList,'--s', ...
+    'LineWidth',2,...
+    'MarkerSize',10,...
+    'MarkerEdgeColor','b',...
+    'MarkerFaceColor',[0.5,0.5,0.5])
+title('Median fitness with varying mutation probability ')
+xlabel('Mutation probability (Logaritmic)') 
+ylabel('Median fitness')
+
+
+xticks(mutationProbabilitys)
+xticklabels=(string(mutationProbabilitys)); %labels x-axis with the tested pmut values 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Summary of results
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Add more results summaries here (pMut < 0.02) ...
-
-average002 = mean(maximumFitnessList002);
-median002 = median(maximumFitnessList002);
-std002 = sqrt(var(maximumFitnessList002));
-sprintf('PMut = 0.02: Median: %0.10f, Average: %0.10f, STD: %0.10f', median002, average002, std002)
-
-% ... and here (pMut > 0.02)
+% Add more results summaries here  ...
+for i = 1:length(maximumFitnessList(1,:))
+    pMut = mutationProbabilitys(i);
+    averageFitness = mean(maximumFitnessList(:,i));
+    medianFitness = median(maximumFitnessList(:,i));
+    stdFitness = sqrt(var(maximumFitnessList(:,i)));
+    sprintf('PMut = %0.4g: Median: %0.10f, Average: %0.10f, STD: %0.10f',pMut, medianFitness, averageFitness, stdFitness)
+end

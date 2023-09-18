@@ -6,7 +6,7 @@ function x = RunGradientDescent(xStart, mu, eta, gradientTolerance)
     x=xStart;
     while norm(gradF)> gradientTolerance
         for i=1:length(x)
-            x(i)=x(i)-gradF(i)*eta;
+            x(i)=x(i)-gradF(i)*etfa;
         end
         gradF = ComputeGradient(x,mu);
     
