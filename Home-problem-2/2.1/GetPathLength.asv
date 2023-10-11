@@ -1,0 +1,15 @@
+function pathLength = GetPathLength(path,cityLocation)
+previousCityLocation= cityLocation(path(end),:)
+pathLength=0;
+
+    for edge=path
+        cityLocation(edge,:);
+        distance=norm(cityLocation-previousCityLocation)
+        pathLength=pathLength+distance;
+        previousCityLocation= cityLocation(edge,:);
+
+
+    end 
+
+
+end
