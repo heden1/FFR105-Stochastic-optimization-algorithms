@@ -12,7 +12,7 @@ function [newIndividual1,newIndividual2] = Cross(individual1, individual2)
     induvidula2CrossContribution=individual2(crossoverPoints2(1)+1:crossoverPoints2(2));
     individual2(crossoverPoints2(1)+1:crossoverPoints2(2))=[];
 
-    newIndividual1=Insert(induvidula2CrossContribution',individual1',crossoverPoints1(1)-1)';
-    newIndividual2=Insert(induvidula1CrossContribution',individual2',crossoverPoints2(1)-1)';
+    newIndividual1=Insert(induvidula2CrossContribution,individual1,crossoverPoints1(1)-1);
+    newIndividual2=Insert(induvidula1CrossContribution,individual2,crossoverPoints2(1)-1);
 
 end

@@ -1,5 +1,5 @@
 function [maximumFitness, bestChromosone] = RunFunctionOptimization(populationSize, numberOfGenes, numberOfVariables, maximumVariableValue, ...
-tournamentSize, tournamentProbability, crossoverProbability, mutationProbability, numberOfGenerations,minChromosomeLength,maxChromosomeLength,A,O);
+tournamentSize, tournamentProbability, crossoverProbability, mutationProbability, numberOfGenerations,minChromosomeLength,maxChromosomeLength,A,O,genRange);
 
  format long
 
@@ -8,10 +8,11 @@ tournamentSize, tournamentProbability, crossoverProbability, mutationProbability
  functionData=LoadFunctionData;
 
 
-population = InitializePopulation(populationSize,minChromosomeLength,maxChromosomeLength);
+population = InitializePopulation(populationSize,minChromosomeLength,maxChromosomeLength,genRange);
 
  %population = InitializePopulation(populationSize,numberOfGenes);
  for generation = 1:numberOfGenerations
+   generation
    maximumFitness  = 0.0;
    fitnessList = zeros(1,populationSize);
    for i = 1:populationSize
@@ -45,7 +46,7 @@ population = InitializePopulation(populationSize,minChromosomeLength,maxChromoso
   
    temporaryPopulation(1).Chromosome=population(iBestIndividual).Chromosome;%temporaryPopulation(1,:) = population(iBestIndividual,:);
    for i = 2:populationSize
-     tempIndividual = Mutate(temporaryPopulation(i).Chromosome,mutationProbability);
+     tempIndividual = Mutate(temporaryPopulation(i).Chromosome,mutationProbability,genRange);
      temporaryPopulation(i).Chromosome = tempIndividual;
    end
    population = temporaryPopulation;

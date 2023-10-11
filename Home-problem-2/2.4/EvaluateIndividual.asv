@@ -1,17 +1,25 @@
 % First compute the function value, then compute the fitness
 % value; see also the problem formulation.
 
-function fitness = EvaluateIndividual(functionData,chromosome,A,O)
-K=size(functionData,2);
-error2=0;
+function fitness = EvaluateIndividual(functionData,chromosome,a,O)
+K=size(functionData,1);
+%chromosome
+cMax=1000;
+
+if length(chromosome)>250
+    penalty=2;
+   
+end
 for iPoint=1:K
-    A(1)=functionData(1,iPoint);
+    
+    A=a;
+    A(1)=functionData(iPoint,1);
 for j=1:length(chromosome)
     placeInGene=mod(j-1,4)+1;
-    i=chromosome(j)
+    i=chromosome(j);
     if placeInGene==1
         operator=O(i);
-    elseif placeInGene==2
+    elseif placeInGene==2                
         iDestination=i;
     elseif placeInGene==3
         operand1=string(A(i));
@@ -20,16 +28,21 @@ for j=1:length(chromosome)
         
         stringOfOperand=[operand1, operator,operand2];
         if operator=='/' && operand2=='0'
-            A(iDestination)=c
-        destinationCalcu=eval(cell2mat(cellstr(stringOfOperand)))
-        A(iDestination)=eval(cell2mat(cellstr(stringOfOperand)))
+            A(iDestination)=cMax;
+        else
+            A(iDestination)=eval(cell2mat(cellstr(stringOfOperand)));
+
+
+        end
     end
    
 end
-gPrime=A(1);
-error2=error2+(gPrime-functionData(2,iPoint));
+%gPrime=A(1);
+%error2=error2+(gPrime-functionData(iPoint,2))^2;
 
 end
-e=sqrt(error2/K);
-fitness=1/e; 
+gPrime=A(:,1);
+error=sqrt(sum((gPrime-functionData(:,2)).^2)/K);
+
+fitness=1/error +penalty;
 end
