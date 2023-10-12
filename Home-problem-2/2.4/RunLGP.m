@@ -1,5 +1,5 @@
 %% RunLGP
-operatorSet=['+','-','*','/'];
+operatorSet={@add @subtract @multi @division};
 constantRegister=[1,3,-1];
 
 M=3;% number of variabel registers 
@@ -21,23 +21,20 @@ populationSize = 200;
 % Parameter specifications
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-numberOfRuns = 1;               
+numberOfRuns = 10;               
 
 maximumVariableValue = 5;          
 numberOfGenes = 5;             
 numberOfVariables = 2;		  
-numberOfGenerations = 100;%300;       
-tournamentSize = 5;                % Do NOT change
-tournamentProbability = 0.75;      % Do NOT change
-crossoverProbability = 0.75;        % Do NOT change
+numberOfGenerations = 10000;     
+tournamentSize = 5;              
+tournamentProbability = 0.75;    
+crossoverProbability = 0.75;  
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Batch runs
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Define more runs here  
-
 totalMaximumFitness=0;
 mutationProbabilitys=[0.02];
 numberOfMutationProbabilitys=length(mutationProbabilitys);
@@ -60,15 +57,18 @@ for mutationProbability=mutationProbabilitys
         
 end
 
+bestChromosoneStr = mat2str(totalBestChromosone);
+dlmwrite('BestChromosome.m',bestChromosoneStr,'delimiter','')
+
+
+
+
 medianFitnessList=median(maximumFitnessList);
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Summary of results
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Add more results summaries here  ...
+
 for i = 1:length(maximumFitnessList(1,:))
     pMut = mutationProbabilitys(i);
     averageFitness = mean(maximumFitnessList(:,i));
@@ -76,5 +76,4 @@ for i = 1:length(maximumFitnessList(1,:))
     stdFitness = sqrt(var(maximumFitnessList(:,i)));
     sprintf('PMut = %0.4g: Median: %0.10f, Average: %0.10f, STD: %0.10f',pMut, medianFitness, averageFitness, stdFitness)
 end
-bestChromosoneStr = mat2str(totalBestChromosone);
-dlmwrite('BestChromosome.m',bestChromosoneStr,'delimiter','')
+
