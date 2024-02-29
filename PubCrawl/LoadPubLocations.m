@@ -1,7 +1,7 @@
-function cityLocation = LoadCityLocations
+function pubLocation = LoadPubLocations
 lx=160*5;
 ly=90*4;
-cityLocation = [
+pubLocation = [
   10+lx 44+ly; ...
   30+lx 52+ly; ...
   61 58;...

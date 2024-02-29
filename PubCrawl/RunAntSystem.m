@@ -10,8 +10,8 @@ clc;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cityLocation = LoadCityLocations();
-numberOfCities = length(cityLocation);
+pubLocation = LoadPubLocations();
+numberOfPubs = length(pubLocation);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters
@@ -29,11 +29,11 @@ targetPathLength = 99.9999999;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 range = [0 850 0 450];
-InitializeTspPlot(cityLocation,range)
-tspFigure = InitializeTspPlot(cityLocation, range);
-connection = InitializeConnections(cityLocation);
-pheromoneLevel = InitializePheromoneLevels(numberOfCities, tau0); % To do: Write the InitializePheromoneLevels
-visibility = GetVisibility(cityLocation);                         % To do: write the GetVisibility function
+InitializeTspPlot(pubLocation,range)
+tspFigure = InitializeTspPlot(pubLocation, range);
+connection = InitializeConnections(pubLocation);
+pheromoneLevel = InitializePheromoneLevels(numberOfPubs, tau0); % To do: Write the InitializePheromoneLevels
+visibility = GetVisibility(pubLocation);                         % To do: write the GetVisibility function
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Main loop
@@ -41,7 +41,7 @@ visibility = GetVisibility(cityLocation);                         % To do: write
 minimumPathLength = inf;
 
 iIteration = 0;
-pathCollection = zeros(numberOfAnts, numberOfCities);
+pathCollection = zeros(numberOfAnts, numberOfPubs);
 pathLengthCollection = zeros(numberOfAnts,1);
 
 while iIteration<100%(minimumPathLength > targetPathLength)
@@ -53,11 +53,11 @@ while iIteration<100%(minimumPathLength > targetPathLength)
 
  for k = 1:numberOfAnts
   path = GeneratePath(pheromoneLevel, visibility, alpha, beta);   % To do: Write the GeneratePath function
-  pathLength = GetPathLength(path,cityLocation);                  % To do: Write the GetPathLength function
+  pathLength = GetPathLength(path,pubLocation);                  % To do: Write the GetPathLength function
   if (pathLength < minimumPathLength)
     minimumPathLength = pathLength;
     disp(sprintf('Iteration %d, ant %d: path length = %.5f',iIteration,k,minimumPathLength));
-    PlotPath(connection,cityLocation,path);
+    PlotPath(connection,pubLocation,path);
   end
  pathCollection(k,:)=path;
  pathLengthCollection(k) = pathLength; 
